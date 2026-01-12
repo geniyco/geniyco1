@@ -63,3 +63,60 @@ print("--- Крок 4: Збір значень часу ---")
 remaining_times = [session_data["time"] for session_data in sessions.values()]
 print(f"Список усіх значень часу, що залишилися: {remaining_times}\n")
 """----------------------------------------------------------------------------------------------------"""
+import copy
+
+# Входные данные
+default_settings = {
+    "theme": "light",
+    "notifications": {"email": True, "sms": False},
+    "limit": 50
+}
+user_preferences = {
+    "theme": "dark",
+    "limit": 100
+}
+
+print("--- Исходные данные ---")
+print(f"Default: {default_settings}")
+print(f"User Prefs: {user_preferences}\n")
+
+# Задание 1: Объединение с помощью оператора ** (распаковка)
+final_config = {**default_settings, **user_preferences}
+print("--- 1. Результат слияния (Shallow Merge) ---")
+print(f"Final Config: {final_config}\n")
+
+# Задание 2: Изменение SMS-уведомлений
+final_config["notifications"]["sms"] = True
+print("--- 2. Final Config после изменения SMS ---")
+print(f"Final Config: {final_config}\n")
+
+# Задание 3: Демонстрация shallow vs deep copy
+print("--- 3. Демонстрация Copy Types ---")
+
+# 3.1. Поверхностное копирование с помощью .copy()
+shallow_copy = final_config.copy()
+shallow_copy["notifications"]["sms"] = False
+print(f"Оригинал после shallow copy: {final_config['notifications']['sms']} (Оригинал изменился!)")
+
+# 3.2. Глубокое копирование с помощью copy.deepcopy()
+deep_copy = copy.deepcopy(final_config)
+deep_copy["notifications"]["sms"] = True
+print(f"Оригинал после deep copy: {final_config['notifications']['sms']} (Оригинал не изменился)\n")
+"""----------------------------------------------------------------------------------------------------"""
+matches = [
+    (["Ivan", "Petro"], 10),
+    (["Petro", "Ivan"], 5),
+    (["Alex", "Oleg"], 12),
+    (["Oleg", "Alex"], 8)
+]
+
+team_scores = {}
+
+for team_list, score in matches:
+    team_key = frozenset(team_list)
+    team_scores[team_key] = team_scores.setdefault(team_key, 0) + score
+
+print("Результати змагань:")
+for team_frozenset, total_score in team_scores.items():
+    team_names = list(team_frozenset)
+    print(f"Команда {team_names}: {total_score} очок")
